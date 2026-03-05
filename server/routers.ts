@@ -16,6 +16,8 @@ import { crmRouter, emailHubRouter, revenueRouter } from "./routers/commandCentr
 import { paypalTransactionsRouter, paypalInvoicingRouter, paypalSubscriptionsRouter, paypalPayoutsRouter } from "./routers/paypalBusiness";
 import { researchRouter } from "./routers/research";
 import { seoAuditPitchRouter } from "./routers/seoAuditPitch";
+import { digitalAdsRouter } from "./routers/digitalAds";
+import { leadOpsRouter } from "./routers/leadOps";
 
 // ── Admin guard ──────────────────────────────────────
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -1110,6 +1112,8 @@ export const appRouter = router({
   paypalPayouts: paypalPayoutsRouter,
   research: researchRouter,
   seoAuditPitch: seoAuditPitchRouter,
+  digitalAds: digitalAdsRouter,
+  leadOps: leadOpsRouter,
 });
 
 export type AppRouter = typeof appRouter;

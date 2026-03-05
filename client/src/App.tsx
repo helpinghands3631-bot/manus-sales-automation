@@ -30,6 +30,8 @@ import CommandCentre from "./pages/CommandCentre";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import DemoPage from "./pages/DemoPage";
+import DigitalAds from "./pages/DigitalAds";
+import LeadOps from "./pages/LeadOps";
 
 /** Wraps a page component with the sidebar DashboardLayout */
 function WithDashboard({ children }: { children: React.ReactNode }) {
@@ -106,6 +108,12 @@ function Router() {
       </Route>
       <Route path="/command-centre">
         <WithDashboard><CommandCentre /></WithDashboard>
+      </Route>
+      <Route path="/digital-ads">
+        <WithDashboard><DigitalAds /></WithDashboard>
+      </Route>
+      <Route path="/lead-ops">
+        <WithDashboard><LeadOps /></WithDashboard>
       </Route>
 
       {/* Fallback */}

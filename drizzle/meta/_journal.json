@@ -64,6 +64,20 @@
       "when": 1772599255208,
       "tag": "0008_young_lady_deathstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1772747722326,
+      "tag": "0009_smooth_bishop",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1772748590334,
+      "tag": "0010_mute_skin",
+      "breakpoints": true
     }
   ]
 }

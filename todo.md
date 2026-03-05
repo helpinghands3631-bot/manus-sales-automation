@@ -381,3 +381,50 @@
 - [x] Frontend: Copy transaction ID button
 - [x] Vitest tests for PayPal transaction search endpoint (5 tests pass)
 - [x] All 73 vitest tests pass (8 test files)
+
+## GitHub Push (Mar 6 2026)
+- [x] Pushed full codebase (184 files) to github.com/helpinghands3631-bot/manus-sales-automation
+
+## Digital Advertising Suite (Mar 6 2026)
+- [x] Schema: adCampaigns table (platform, objective, targeting, budget, status, performance metrics)
+- [x] Schema: adCreatives table (headline, description, images, CTA, campaignId)
+- [x] Schema: abTests table (variantA, variantB, winner, metrics, campaignId)
+- [x] Backend: digitalAds router (create, list, update status, delete campaigns)
+- [x] Backend: AI ad copy generator (Facebook, Google, Instagram — headlines, descriptions, CTAs, hashtags)
+- [x] Backend: AI audience targeting builder (demographics, interests, behaviours, geo)
+- [x] Backend: AI budget optimizer (daily/lifetime budget, CPC/CTR/ROAS estimates)
+- [x] Backend: A/B test tracker (create test, record metrics, declare winner)
+- [x] Backend: Performance summary aggregation endpoint
+- [x] Frontend: Digital Advertising hub page with 5 tabs (Campaigns, AI Copy, Audience, Budget, A/B Tests)
+- [x] Frontend: Ad Campaign Creator with platform selector and AI-generated copy
+- [x] Frontend: Audience Builder with visual targeting controls
+- [x] Frontend: Budget Optimizer with goal-based recommendations
+- [x] Frontend: Performance overview stats bar (8 metrics)
+- [x] Frontend: A/B Test Manager with side-by-side comparison
+- [x] Navigation: Add Digital Advertising to sidebar (Target icon)
+- [x] Vitest tests for digitalAds router (7 tests pass)
+- [x] All 80 vitest tests pass (9 test files)
+
+## LeadOps Platform — GitHub Repo Integration (Mar 6 2026)
+- [x] Schema: leadOpsJobs table (type, status, config JSON, results JSON, plan, userId)
+- [x] Schema: scrapedLeads table (name, email, phone, website, address, source, category, city, score, jobId)
+- [x] Schema: outreachSequences table (name, templateSteps JSON, segment, status, jobId)
+- [x] Backend: leadOps router with tool connector architecture (4 connectors)
+- [x] Backend: Lead Scraper connector (Grok-powered scrape simulation → parse leads → store in scrapedLeads)
+- [x] Backend: Outreach Engine connector (AI-generated multi-step email sequences)
+- [x] Backend: Core Agent connector (optimization via Grok analysis)
+- [x] Backend: Grok LLM connector (cold email variants, DM scripts, call scripts)
+- [x] Backend: Lead scoring engine (A/B/C scoring by city, category, size signals)
+- [x] Backend: 3 productised plans (Local Lead Flood $497, B2B Outbound $997, Fully Managed $2,497)
+- [x] Backend: Weekly performance report generator (AI-written markdown reports)
+- [x] Frontend: LeadOps Hub page with plan selector (3 clickable plan cards)
+- [x] Frontend: Scrape Panel (niche + geo + max results inputs, run button)
+- [x] Frontend: Outreach tab (sequence generator + saved sequences list)
+- [x] Frontend: Lead Table with A/B/C score badges, filtering, 6-column table
+- [x] Frontend: Optimize tab (Fully Managed only — AI optimization agent)
+- [x] Frontend: Performance Reports tab (AI-generated markdown reports)
+- [x] Frontend: Jobs History tab (all scrape/outreach/optimization jobs)
+- [x] Frontend: 5 stat cards (total jobs, leads scraped, A-grade leads, sequences, active jobs)
+- [x] Navigation: Add LeadOps Platform to sidebar (Rocket icon)
+- [x] Vitest tests for leadOps procedures (11 tests pass)
+- [x] All 91 vitest tests pass (10 test files)

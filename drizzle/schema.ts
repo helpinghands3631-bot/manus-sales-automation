@@ -307,3 +307,130 @@ export const seoAuditPitches = mysqlTable("seoAuditPitches", {
 });
 export type SeoAuditPitch = typeof seoAuditPitches.$inferSelect;
 export type InsertSeoAuditPitch = typeof seoAuditPitches.$inferInsert;
+
+// ── Digital Advertising ─────────────────────────────────────
+export const adCampaigns = mysqlTable("ad_campaigns", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  agencyId: int("agencyId"),
+  name: varchar("name", { length: 255 }).notNull(),
+  platform: mysqlEnum("platform", ["facebook", "google", "instagram", "linkedin", "tiktok"]).notNull(),
+  objective: mysqlEnum("objective", ["awareness", "traffic", "leads", "conversions", "sales"]).notNull(),
+  status: mysqlEnum("status", ["draft", "active", "paused", "completed", "archived"]).default("draft").notNull(),
+  // Targeting
+  targetSuburbs: text("targetSuburbs"),
+  targetDemographics: json("targetDemographics"),
+  targetInterests: json("targetInterests"),
+  targetAudience: json("targetAudience"),
+  // Budget
+  budgetType: mysqlEnum("budgetType", ["daily", "lifetime"]).default("daily"),
+  budgetAmount: int("budgetAmount"),
+  currency: varchar("currency", { length: 3 }).default("AUD"),
+  startDate: timestamp("startDate"),
+  endDate: timestamp("endDate"),
+  // AI-generated content
+  aiCopy: json("aiCopy"),
+  // Performance metrics (cached from platform or manual entry)
+  impressions: int("impressions").default(0),
+  clicks: int("clicks").default(0),
+  conversions: int("conversions").default(0),
+  spend: int("spend").default(0),
+  revenue: int("revenue").default(0),
+  ctr: varchar("ctr", { length: 10 }),
+  cpc: varchar("cpc", { length: 10 }),
+  roas: varchar("roas", { length: 10 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type AdCampaign = typeof adCampaigns.$inferSelect;
+export type InsertAdCampaign = typeof adCampaigns.$inferInsert;
+
+export const adCreatives = mysqlTable("ad_creatives", {
+  id: int("id").autoincrement().primaryKey(),
+  campaignId: int("campaignId").notNull(),
+  userId: int("userId").notNull(),
+  platform: mysqlEnum("platform", ["facebook", "google", "instagram", "linkedin", "tiktok"]).notNull(),
+  type: mysqlEnum("type", ["image", "video", "carousel", "text"]).default("text").notNull(),
+  headline: varchar("headline", { length: 255 }),
+  description: text("description"),
+  primaryText: text("primaryText"),
+  callToAction: varchar("callToAction", { length: 64 }),
+  imageUrl: varchar("imageUrl", { length: 1024 }),
+  landingUrl: varchar("landingUrl", { length: 1024 }),
+  isSaved: boolean("isSaved").default(false),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type AdCreative = typeof adCreatives.$inferSelect;
+export type InsertAdCreative = typeof adCreatives.$inferInsert;
+
+export const abTests = mysqlTable("ab_tests", {
+  id: int("id").autoincrement().primaryKey(),
+  campaignId: int("campaignId").notNull(),
+  userId: int("userId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  status: mysqlEnum("status", ["running", "completed", "cancelled"]).default("running").notNull(),
+  variantAId: int("variantAId").notNull(),
+  variantBId: int("variantBId").notNull(),
+  variantAMetrics: json("variantAMetrics"),
+  variantBMetrics: json("variantBMetrics"),
+  winner: mysqlEnum("winner", ["A", "B", "none"]),
+  winnerReason: text("winnerReason"),
+  startedAt: timestamp("startedAt").defaultNow().notNull(),
+  completedAt: timestamp("completedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type AbTest = typeof abTests.$inferSelect;
+export type InsertAbTest = typeof abTests.$inferInsert;
+
+// ── LeadOps Platform ──────────────────────────────────────────────
+
+export const leadOpsJobs = mysqlTable("leadops_jobs", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  type: mysqlEnum("type", ["scrape", "outreach", "full_campaign", "optimization", "report"]).notNull(),
+  plan: mysqlEnum("plan", ["local_lead_flood", "b2b_outbound", "fully_managed"]).default("local_lead_flood").notNull(),
+  status: mysqlEnum("status", ["pending", "running", "completed", "failed", "cancelled"]).default("pending").notNull(),
+  config: json("config"), // niche, geo, ICP, templates, schedule
+  results: json("results"), // summary stats, logs, recommendations
+  errorMessage: text("errorMessage"),
+  startedAt: timestamp("startedAt"),
+  completedAt: timestamp("completedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type LeadOpsJob = typeof leadOpsJobs.$inferSelect;
+export type InsertLeadOpsJob = typeof leadOpsJobs.$inferInsert;
+
+export const scrapedLeads = mysqlTable("scraped_leads", {
+  id: int("id").autoincrement().primaryKey(),
+  jobId: int("jobId").notNull(),
+  userId: int("userId").notNull(),
+  name: varchar("name", { length: 255 }),
+  email: varchar("email", { length: 255 }),
+  phone: varchar("phone", { length: 64 }),
+  website: varchar("website", { length: 1024 }),
+  address: varchar("address", { length: 512 }),
+  city: varchar("city", { length: 128 }),
+  category: varchar("category", { length: 128 }),
+  source: varchar("source", { length: 64 }).default("google_maps"),
+  score: mysqlEnum("score", ["A", "B", "C", "unscored"]).default("unscored"),
+  extraMeta: json("extraMeta"), // any additional fields from scraper
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type ScrapedLead = typeof scrapedLeads.$inferSelect;
+export type InsertScrapedLead = typeof scrapedLeads.$inferInsert;
+
+export const outreachSequences = mysqlTable("outreach_sequences", {
+  id: int("id").autoincrement().primaryKey(),
+  jobId: int("jobId"),
+  userId: int("userId").notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  segment: varchar("segment", { length: 255 }),
+  platform: mysqlEnum("platform", ["email", "linkedin", "sms", "multi"]).default("email").notNull(),
+  status: mysqlEnum("status", ["draft", "active", "paused", "completed"]).default("draft").notNull(),
+  templateSteps: json("templateSteps"), // array of { step, subject, body, delayDays }
+  stats: json("stats"), // { sent, opened, clicked, replied, bounced }
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type OutreachSequence = typeof outreachSequences.$inferSelect;
+export type InsertOutreachSequence = typeof outreachSequences.$inferInsert;

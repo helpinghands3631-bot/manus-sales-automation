@@ -45,6 +45,8 @@ import {
   Sparkles,
   Globe,
   Command,
+  Target,
+  Rocket,
 } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -71,6 +73,8 @@ const menuItems = [
   { icon: Webhook, label: "Webhooks", path: "/webhooks" },
   { icon: Globe, label: "Connections & SEO", path: "/webhook-connections" },
   { icon: Command, label: "Command Centre", path: "/command-centre" },
+  { icon: Target, label: "Digital Advertising", path: "/digital-ads" },
+  { icon: Rocket, label: "LeadOps Platform", path: "/lead-ops" },
 ];
 
 const adminItems = [
