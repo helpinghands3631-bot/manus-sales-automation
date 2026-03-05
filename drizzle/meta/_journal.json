@@ -1,0 +1,69 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1771905521911,
+      "tag": "0000_strange_hercules",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1771905695549,
+      "tag": "0001_flat_kingpin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1771935939855,
+      "tag": "0002_petite_sunset_bain",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1771937537665,
+      "tag": "0003_messy_network",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1772238995866,
+      "tag": "0004_spotty_weapon_omega",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1772362299472,
+      "tag": "0005_naive_jamie_braddock",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1772415870803,
+      "tag": "0006_amazing_blue_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1772416186917,
+      "tag": "0007_wakeful_lila_cheney",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1772599255208,
+      "tag": "0008_young_lady_deathstrike",
+      "breakpoints": true
+    }
+  ]
+}
