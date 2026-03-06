@@ -1,0 +1,133 @@
+version: '3.8'
+
+services:
+
+  # ── Lead Scraper ─────────────────────────────────────────
+  lead-scraper:
+    build:
+      context: ./services/lead-scraper
+      dockerfile: Dockerfile
+    container_name: leadops_scraper
+    restart: unless-stopped
+    environment:
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
+      - PORT=8001
+    ports:
+      - "8001:8001"
+    networks:
+      - leadops
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Outreach / Sales Automation ──────────────────────────
+  outreach-engine:
+    build:
+      context: ./services/outreach
+      dockerfile: Dockerfile
+    container_name: leadops_outreach
+    restart: unless-stopped
+    environment:
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - FROM_EMAIL=${FROM_EMAIL}
+      - PORT=8002
+    ports:
+      - "8002:8002"
+    networks:
+      - leadops
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Core Agent (ReAct Loop) ───────────────────────────────
+  core-agent:
+    build:
+      context: ./services/core-agent
+      dockerfile: Dockerfile
+    container_name: leadops_agent
+    restart: unless-stopped
+    environment:
+      - XAI_API_KEY=${XAI_API_KEY}
+      - LEAD_SCRAPER_URL=http://lead-scraper:8001
+      - OUTREACH_URL=http://outreach-engine:8002
+      - PORT=8003
+    ports:
+      - "8003:8003"
+    depends_on:
+      - lead-scraper
+      - outreach-engine
+    networks:
+      - leadops
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── API Gateway ───────────────────────────────────────────
+  api-gateway:
+    build:
+      context: ./services/gateway
+      dockerfile: Dockerfile
+    container_name: leadops_gateway
+    restart: unless-stopped
+    environment:
+      - CORE_AGENT_URL=http://core-agent:8003
+      - LEAD_SCRAPER_URL=http://lead-scraper:8001
+      - OUTREACH_URL=http://outreach-engine:8002
+      - API_KEY=${LEADOPS_API_KEY}
+      - PORT=8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - core-agent
+    networks:
+      - leadops
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Redis (job queue + caching) ───────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: leadops_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - leadops
+    volumes:
+      - redis_data:/data
+
+  # ── Postgres (lead + campaign storage) ───────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: leadops_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=leadops
+      - POSTGRES_USER=${DB_USER:-leadops}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - leadops
+
+networks:
+  leadops:
+    driver: bridge
+
+volumes:
+  redis_data:
+  pg_data:
